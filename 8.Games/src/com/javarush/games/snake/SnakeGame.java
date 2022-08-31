@@ -7,6 +7,7 @@ public class SnakeGame extends Game{
     public static final int HEIGHT = 15;
     private Snake snake;
     private int turnDelay;
+    private Apple apple;
 
     public void initialize(){
         setScreenSize(WIDTH, HEIGHT);
@@ -19,6 +20,7 @@ public class SnakeGame extends Game{
             }
         }
         snake.draw(SnakeGame.this);
+        apple.draw(SnakeGame.this);
     }
     public void onKeyPress(Key _key) {
         snake.setDirection( _key == Key.UP? Direction.UP :
@@ -27,14 +29,22 @@ public class SnakeGame extends Game{
     }
     private void createGame(){
         snake = new Snake(WIDTH/2, HEIGHT/2);
+        //Apple apple = new Apple(5,5);
+        createNewApple();
         drawScene();
         turnDelay = 300;
         setTurnTimer(turnDelay);
-        //Apple apple = new Apple(7,7);
         //apple.draw(this);
     }
+    private void createNewApple() {
+        apple = new Apple(getRandomNumber(WIDTH), getRandomNumber(HEIGHT));
+
+    }
    public void onTurn(int step) {
-        snake.move();
+        if (!apple.isAlive) {
+            createNewApple();
+        }
+        snake.move(apple);
         drawScene();
    }
 }

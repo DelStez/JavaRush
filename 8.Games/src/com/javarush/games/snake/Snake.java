@@ -48,15 +48,21 @@ public class Snake {
     public void removeTail() {
         snakeParts.remove(snakeParts.size()-1);
     }
-    public void move() {
+    public void move(Apple apple) {
         GameObject head = createNewHead();
         if ((head.x >= SnakeGame.WIDTH || head.x < 0 )
                 || (head.y >= SnakeGame.HEIGHT || head.y < 0)) {
-
             isAlive = false;
         }else {
             snakeParts.add(0, head);
-            removeTail();
+            if(head.x == apple.x && head.y == apple.y) {
+                apple.isAlive = false;
+            }
+            else
+            {
+                removeTail();
+            }
+
         }
 
     }

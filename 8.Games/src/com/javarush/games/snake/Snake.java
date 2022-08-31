@@ -7,10 +7,21 @@ import com.javarush.engine.cell.*;
 public class Snake {
     public int x;
     public int y;
+    public boolean isAlive = true;
     private final static String HEAD_SIGN = "\uD83D\uDC7E";
     private final static String BODY_SIGN = "\u26AB";
     private List<GameObject> snakeParts = new ArrayList<>();
     private Snake snake;
+    private Direction direction = Direction.LEFT;
+    public void setDirection(Direction direction) {
+        if ( (this.direction == Direction.UP && direction != Direction.DOWN)
+                || (this.direction == Direction.DOWN && direction != Direction.UP)
+                || (this.direction == Direction.LEFT && direction != Direction.RIGHT)
+                || (this.direction == Direction.RIGHT && direction != Direction.LEFT)) {
+            this.direction = direction;
+        }
+
+    }
     public Snake(int x, int y){
         this.snakeParts = new ArrayList<>();
         snakeParts.add(new GameObject(x, y));
@@ -19,8 +30,34 @@ public class Snake {
     }
     public void draw(Game game) {
         for(int j = 0; j < snakeParts.size(); j++) {
-            game.setCellValue(snakeParts.get(j).x, snakeParts.get(j).y,
-                    j==0 ? HEAD_SIGN :BODY_SIGN);
+            game.setCellValueEx(snakeParts.get(j).x, snakeParts.get(j).y, Color.NONE,
+                    j==0 ? HEAD_SIGN :BODY_SIGN, !isAlive? Color.RED : Color.GREEN, 75);
         }
+    }
+    public GameObject createNewHead() {
+        int headX = snakeParts.get(0).x;
+        int headY = snakeParts.get(0).y;
+        GameObject head = new GameObject(
+                direction == Direction.LEFT ? headX - 1:
+                        direction == Direction.RIGHT? headX + 1: headX,
+                direction == Direction.DOWN? headY + 1:
+                        direction == Direction.UP? headY - 1: headY
+        );
+        return head;
+    }
+    public void removeTail() {
+        snakeParts.remove(snakeParts.size()-1);
+    }
+    public void move() {
+        GameObject head = createNewHead();
+        if ((head.x >= SnakeGame.WIDTH || head.x < 0 )
+                || (head.y >= SnakeGame.HEIGHT || head.y < 0)) {
+
+            isAlive = false;
+        }else {
+            snakeParts.add(0, head);
+            removeTail();
+        }
+
     }
 }

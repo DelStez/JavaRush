@@ -8,6 +8,7 @@ public class SnakeGame extends Game{
     private Snake snake;
     private int turnDelay;
     private Apple apple;
+    private boolean isGameStoped;
 
     public void initialize(){
         setScreenSize(WIDTH, HEIGHT);

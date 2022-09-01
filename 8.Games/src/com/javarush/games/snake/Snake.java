@@ -13,6 +13,12 @@ public class Snake {
     private List<GameObject> snakeParts = new ArrayList<>();
     private Snake snake;
     private Direction direction = Direction.LEFT;
+    public Snake(int x, int y){
+        this.snakeParts = new ArrayList<>();
+        snakeParts.add(new GameObject(x, y));
+        snakeParts.add(new GameObject(x + 1, y));
+        snakeParts.add(new GameObject(x + 2, y));
+    }
     public void setDirection(Direction direction) {
         if ( (this.direction == Direction.UP && direction != Direction.DOWN)
                 || (this.direction == Direction.DOWN && direction != Direction.UP)
@@ -22,12 +28,25 @@ public class Snake {
         }
 
     }
-    public Snake(int x, int y){
-        this.snakeParts = new ArrayList<>();
-        snakeParts.add(new GameObject(x, y));
-        snakeParts.add(new GameObject(x + 1, y));
-        snakeParts.add(new GameObject(x + 2, y));
+    public void move(Apple apple) {
+        GameObject head = createNewHead();
+        if ((head.x >= SnakeGame.WIDTH || head.x < 0 )
+                || (head.y >= SnakeGame.HEIGHT || head.y < 0)) {
+            isAlive = false;
+        }else {
+            if (checkCollision(head)) {
+                isAlive = false;
+            }else {
+                snakeParts.add(0, head);
+                if(head.x == apple.x && head.y == apple.y) {
+                    apple.isAlive = false;
+                }else {
+                    removeTail();
+                }
+            }
+        }
     }
+
     public void draw(Game game) {
         for(int j = 0; j < snakeParts.size(); j++) {
             game.setCellValueEx(snakeParts.get(j).x, snakeParts.get(j).y, Color.NONE,
@@ -41,29 +60,18 @@ public class Snake {
                 direction == Direction.LEFT ? headX - 1:
                         direction == Direction.RIGHT? headX + 1: headX,
                 direction == Direction.DOWN? headY + 1:
-                        direction == Direction.UP? headY - 1: headY
-        );
+                        direction == Direction.UP? headY - 1: headY);
         return head;
     }
     public void removeTail() {
         snakeParts.remove(snakeParts.size()-1);
     }
-    public void move(Apple apple) {
-        GameObject head = createNewHead();
-        if ((head.x >= SnakeGame.WIDTH || head.x < 0 )
-                || (head.y >= SnakeGame.HEIGHT || head.y < 0)) {
-            isAlive = false;
-        }else {
-            snakeParts.add(0, head);
-            if(head.x == apple.x && head.y == apple.y) {
-                apple.isAlive = false;
+    public boolean checkCollision(GameObject object) {
+        for (GameObject snakeBody: snakeParts) {
+            if (object.y == snakeBody.y && object.x == snakeBody.x ) {
+                return true;
             }
-            else
-            {
-                removeTail();
-            }
-
         }
-
+        return false;
     }
 }

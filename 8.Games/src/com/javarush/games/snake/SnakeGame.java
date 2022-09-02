@@ -25,9 +25,15 @@ public class SnakeGame extends Game{
         apple.draw(SnakeGame.this);
     }
     public void onKeyPress(Key _key) {
-        snake.setDirection( _key == Key.UP? Direction.UP :
-                _key == Key.DOWN? Direction.DOWN :
-                _key == Key.LEFT? Direction.LEFT: Direction.RIGHT);
+        if (_key == Key.SPACE)  {
+            if (isGameStopped) {
+                createGame();
+            }
+            return;
+        }
+            snake.setDirection( _key == Key.UP? Direction.UP :
+                    _key == Key.DOWN? Direction.DOWN :
+                            _key == Key.LEFT? Direction.LEFT: Direction.RIGHT);
     }
     private void createGame(){
         isGameStopped = false;
@@ -40,7 +46,9 @@ public class SnakeGame extends Game{
         //apple.draw(this);
     }
     private void createNewApple() {
-        apple = new Apple(getRandomNumber(WIDTH), getRandomNumber(HEIGHT));
+        do {
+            apple = new Apple(getRandomNumber(WIDTH), getRandomNumber(HEIGHT));
+        }while (snake.checkCollision(apple) != false);
 
     }
     private void gameOver() {

@@ -20,10 +20,14 @@ public class Snake {
         snakeParts.add(new GameObject(x + 2, y));
     }
     public void setDirection(Direction direction) {
-        if ( (this.direction == Direction.UP && direction != Direction.DOWN)
-                || (this.direction == Direction.DOWN && direction != Direction.UP)
-                || (this.direction == Direction.LEFT && direction != Direction.RIGHT)
-                || (this.direction == Direction.RIGHT && direction != Direction.LEFT)) {
+        if ( (this.direction == Direction.UP && direction != Direction.DOWN
+                    && snakeParts.get(0).y != snakeParts.get(1).y)
+                || (this.direction == Direction.DOWN && direction != Direction.UP
+                    && snakeParts.get(0).y != snakeParts.get(1).y )
+                || (this.direction == Direction.LEFT && direction != Direction.RIGHT
+                    && snakeParts.get(0).x != snakeParts.get(1).x)
+                || (this.direction == Direction.RIGHT && direction != Direction.LEFT
+                    && snakeParts.get(0).x != snakeParts.get(1).x)) {
             this.direction = direction;
         }
 

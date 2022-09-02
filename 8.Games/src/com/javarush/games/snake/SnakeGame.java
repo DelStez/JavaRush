@@ -5,10 +5,11 @@ import com.javarush.engine.cell.*;
 public class SnakeGame extends Game{
     public static final int WIDTH = 15;
     public static final int HEIGHT = 15;
+    private static final int GOAL = 28;
     private Snake snake;
     private int turnDelay;
     private Apple apple;
-    private boolean isGameStoped;
+    private boolean isGameStopped;
 
     public void initialize(){
         setScreenSize(WIDTH, HEIGHT);
@@ -29,6 +30,7 @@ public class SnakeGame extends Game{
                 _key == Key.LEFT? Direction.LEFT: Direction.RIGHT);
     }
     private void createGame(){
+        isGameStopped = false;
         snake = new Snake(WIDTH/2, HEIGHT/2);
         //Apple apple = new Apple(5,5);
         createNewApple();
@@ -41,11 +43,28 @@ public class SnakeGame extends Game{
         apple = new Apple(getRandomNumber(WIDTH), getRandomNumber(HEIGHT));
 
     }
+    private void gameOver() {
+        stopTurnTimer();
+        isGameStopped = true;
+        showMessageDialog(Color.BLACK, "GAME OVER",Color.WHITE, 16);
+
+    }
+    private void win() {
+        stopTurnTimer();
+        isGameStopped = true;
+        showMessageDialog(Color.BLACK, "YOU WIN",Color.WHITE, 16);
+    }
    public void onTurn(int step) {
         if (!apple.isAlive) {
             createNewApple();
         }
         snake.move(apple);
+        if (!snake.isAlive) {
+            gameOver();
+        }
+        if (GOAL < snake.getLength()) {
+            win();
+        }
         drawScene();
    }
 }

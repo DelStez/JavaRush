@@ -63,6 +63,9 @@ public class Snake {
                         direction == Direction.UP? headY - 1: headY);
         return head;
     }
+    public int getLength() {
+        return snakeParts.size();
+    }
     public void removeTail() {
         snakeParts.remove(snakeParts.size()-1);
     }

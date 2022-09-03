@@ -8,6 +8,7 @@ public class SnakeGame extends Game{
     private static final int GOAL = 28;
     private Snake snake;
     private int turnDelay;
+    private int score;
     private Apple apple;
     private boolean isGameStopped;
 
@@ -35,7 +36,9 @@ public class SnakeGame extends Game{
                     _key == Key.DOWN? Direction.DOWN :
                             _key == Key.LEFT? Direction.LEFT: Direction.RIGHT);
     }
-    private void createGame(){
+    private void createGame() {
+        score = 0;
+        setScore(score);
         isGameStopped = false;
         snake = new Snake(WIDTH/2, HEIGHT/2);
         //Apple apple = new Apple(5,5);
@@ -65,10 +68,15 @@ public class SnakeGame extends Game{
    public void onTurn(int step) {
         if (!apple.isAlive) {
             createNewApple();
+            score +=5;
+            setScore(score);
+            turnDelay -=10;
+            setTurnTimer(turnDelay);
         }
         snake.move(apple);
         if (!snake.isAlive) {
             gameOver();
+
         }
         if (GOAL < snake.getLength()) {
             win();

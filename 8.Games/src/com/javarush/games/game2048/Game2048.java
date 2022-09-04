@@ -12,6 +12,9 @@ public class Game2048 extends Game{
         drawScene();
     }
     private  void createGame() {
+        for(int i = 0; i < 2; i++) {
+            createNewNumber();
+        }
 
     }
     private void drawScene() {
@@ -20,5 +23,15 @@ public class Game2048 extends Game{
                setCellColor(x,y, Color.SANDYBROWN);
            }
        }
+    }
+    private  void createNewNumber() {
+        int x, y;
+        do {
+            x = getRandomNumber(SIDE);
+            y = getRandomNumber(SIDE);
+        }while(gameField[y][x] != 0);
+        int j = getRandomNumber(10);
+        gameField[y][x] = j == 9 ? 4 : 2;
+
     }
 }

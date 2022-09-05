@@ -5,7 +5,7 @@ public class Game2048 extends Game{
     private static  final int SIDE = 4;
     private int[][] gameField = new int[SIDE][SIDE];
 
-    @Override
+
     public void initialize() {
         setScreenSize(SIDE,SIDE);
         createGame();
@@ -34,4 +34,13 @@ public class Game2048 extends Game{
         gameField[y][x] = j == 9 ? 4 : 2;
 
     }
+    private Color getColorByValue(int value) {
+
+        return null;
+    }
+    private void setCellColoredNumber(int x, int y, int value) {
+        getColorByValue(value);
+        setCellValueEx(x, y, Color.ORCHID, "");
+    }
+
 }

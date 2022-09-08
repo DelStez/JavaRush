@@ -15,7 +15,6 @@ public class Game2048 extends Game{
         for(int i = 0; i < 2; i++) {
             createNewNumber();
         }
-
     }
     private void drawScene() {
        for (int x = 0;  x < gameField.length; x++) {
@@ -32,7 +31,6 @@ public class Game2048 extends Game{
         }while(gameField[y][x] != 0);
         int j = getRandomNumber(10);
         gameField[y][x] = j == 9 ? 4 : 2;
-
     }
     private Color getColorByValue(int value) {
         switch (value){
@@ -56,6 +54,24 @@ public class Game2048 extends Game{
             setCellValueEx(x, y, getColorByValue(0), "");
         else
             setCellValueEx(x, y, getColorByValue(value), Integer.toString(value));
+    }
+    private boolean compressRow(int[] row) {
+        boolean flag = false;
+        for (int i = 0; i < row.length - 1; i++)
+        {
+            for (int j = 0; j < row.length - 1; j++)
+            {
+                int a = row[j];
+                int b = row[j + 1];
+                if (a == 0 && b > 0)
+                {
+                    flag = true;
+                    row[j] = b;
+                    row[j + 1] = a;
+                }
+            }
+        }
+        return flag;
     }
 
 }

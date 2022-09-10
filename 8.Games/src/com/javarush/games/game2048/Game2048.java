@@ -73,5 +73,16 @@ public class Game2048 extends Game{
         }
         return flag;
     }
+    private boolean mergeRow(int[] row) {
+        boolean merged = false;
+        for(int i = 0; i < row.length - 1; i++) {
+            if(row[i] == row[i + 1] && row[i] != 0) {
+                row[i] += row[i];
+                row[i + 1] = 0;
+                merged = true;
+            }
+        }
+        return merged;
+    }
 
 }
